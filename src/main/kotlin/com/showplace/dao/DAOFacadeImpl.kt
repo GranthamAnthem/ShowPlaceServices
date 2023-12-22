@@ -170,7 +170,7 @@ class DAOFacadeImpl : DAOFacade {
         }
     }
 
-    override suspend fun getAllShows(page: Long): List<Show> {
+    override suspend fun getAllShows(): List<Show> {
         // get all shows, along with the venues and the lineups
         return dbQuery {
             val shows = ShowTable

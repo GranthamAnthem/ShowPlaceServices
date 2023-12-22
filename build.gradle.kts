@@ -9,7 +9,7 @@ val koin_ktor: String by project
 
 plugins {
     kotlin("jvm") version "1.9.20"
-    id("io.ktor.plugin") version "2.3.6"
+    id("io.ktor.plugin") version "2.3.7"
     id("org.jetbrains.kotlin.plugin.serialization") version "1.9.20"
 }
 
@@ -39,10 +39,11 @@ dependencies {
     testImplementation("io.ktor:ktor-server-tests-jvm")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
 
-
+    // Jsoup
     implementation("org.jsoup:jsoup:1.15.4")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1")
 
+    // Coroutines
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.1")
     implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
     implementation("org.jetbrains.kotlinx:kotlinx-datetime-jvm:0.4.1")
 

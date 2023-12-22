@@ -1,7 +1,6 @@
 package com.showplace.dao
 
 import com.showplace.model.*
-import com.showplace.util.dbUrlBuilder
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import io.ktor.server.config.*
@@ -15,7 +14,7 @@ object DatabaseFactory {
 
     fun init(config: ApplicationConfig) {
         val driverClassName = config.property("storage.driverClassName").getString()
-        val jdbcURL = dbUrlBuilder(config)
+        val jdbcURL = System.getenv("VERCEL_jdbcURL") ?: config.property("storage.jdbcURL").getString()
 
         val database = Database.connect(createHikariDataSource(jdbcURL, driverClassName))
         transaction(database) {

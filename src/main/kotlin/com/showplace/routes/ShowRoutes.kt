@@ -23,8 +23,7 @@ fun Route.showRouting(dao: DAOFacade) {
     route("/allShows") {
         get {
             try {
-                val page = call.parameters["page"]?.toLong() ?: 0L
-                call.respond(dao.getAllShows(page))
+                call.respond(dao.getAllShows())
             } catch (ex: Exception) {
                 call.respond(HttpStatusCode.BadRequest, "No shows listed")
             }

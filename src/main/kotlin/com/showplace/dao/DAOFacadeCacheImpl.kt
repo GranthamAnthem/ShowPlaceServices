@@ -1,6 +1,8 @@
 package com.showplace.dao
 
 import com.showplace.model.*
+import com.showplace.util.shouldUpdateNewShows
+import com.showplace.webScraper.getShowsFromWeb
 import kotlinx.datetime.*
 import org.ehcache.PersistentCacheManager
 import org.ehcache.config.builders.CacheConfigurationBuilder
@@ -46,8 +48,13 @@ class DAOFacadeCacheImpl(
         return delegate.getAllVenues()
     }
 
-    override suspend fun getAllShows(page: Long): List<Show> {
-        return delegate.getAllShows(page)
+    override suspend fun getAllShows(): List<Show> {
+        var shows = delegate.getAllShows()
+        if (shows.isEmpty() || shouldUpdateNewShows(shows)) {
+            addAllShows(getShowsFromWeb())
+            shows = delegate.getAllShows()
+        }
+        return shows
     }
 
     override suspend fun getAllShowsFromToday(page: Long): List<Show> {
