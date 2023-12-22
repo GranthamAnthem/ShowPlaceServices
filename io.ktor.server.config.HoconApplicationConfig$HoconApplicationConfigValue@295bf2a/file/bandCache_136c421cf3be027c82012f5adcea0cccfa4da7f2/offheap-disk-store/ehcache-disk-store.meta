@@ -1,0 +1,4 @@
+#Key and value types
+#Fri Dec 22 13:11:23 EST 2023
+valueType=com.showplace.model.Band
+keyType=java.lang.Integer

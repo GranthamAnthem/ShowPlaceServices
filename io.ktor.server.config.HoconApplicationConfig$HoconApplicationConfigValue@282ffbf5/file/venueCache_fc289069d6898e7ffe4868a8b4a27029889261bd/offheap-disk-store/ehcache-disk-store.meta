@@ -1,0 +1,4 @@
+#Key and value types
+#Wed Dec 20 12:29:49 EST 2023
+valueType=com.showplace.model.Venue
+keyType=java.lang.Integer
