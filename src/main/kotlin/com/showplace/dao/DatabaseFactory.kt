@@ -14,7 +14,7 @@ object DatabaseFactory {
 
     fun init(config: ApplicationConfig) {
         val driverClassName = config.property("storage.driverClassName").getString()
-        val jdbcURL = System.getenv("VERCEL_jdbcURL") ?: config.property("storage.jdbcURL").getString()
+        val jdbcURL = config.property("storage.jdbcURL").getString()
 
         val database = Database.connect(createHikariDataSource(jdbcURL, driverClassName))
         transaction(database) {

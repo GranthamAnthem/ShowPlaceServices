@@ -2,12 +2,20 @@ package com.showplace.routes
 
 import com.showplace.dao.DAOFacade
 import com.showplace.model.Show
+import com.showplace.util.shouldUpdateNewShows
+import com.showplace.webScraper.getBandsFromWeb
+import com.showplace.webScraper.getShowsFromWeb
+import com.showplace.webScraper.getVenuesFromWeb
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.util.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 
 fun Route.showRouting(dao: DAOFacade) {
     route("/shows") {
@@ -19,9 +27,7 @@ fun Route.showRouting(dao: DAOFacade) {
                 call.respond(HttpStatusCode.BadRequest, "No shows listed")
             }
         }
-    }
-    route("/allShows") {
-        get {
+        get("/all") {
             try {
                 call.respond(dao.getAllShows())
             } catch (ex: Exception) {
