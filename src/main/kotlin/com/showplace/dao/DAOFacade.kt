@@ -16,6 +16,8 @@ interface DAOFacade {
     suspend fun getShowById(id: Int): Show?
     suspend fun addAllShows(shows: List<Show>)
     suspend fun getAllShows(): List<Show>
+
+    suspend fun getLatestShow(): Show?
     suspend fun getAllShowsFromToday(page: Long = 0): List<Show>
     suspend fun updateShow(show: Show)
     suspend fun addShow(show: Show)

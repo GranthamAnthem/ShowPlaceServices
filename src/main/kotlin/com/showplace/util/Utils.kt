@@ -4,8 +4,8 @@ import com.showplace.model.Show
 import io.ktor.server.config.*
 import kotlinx.datetime.*
 
-fun shouldUpdateNewShows(shows: List<Show>): Boolean {
-    val lastShowDate = shows.last().date
+fun shouldUpdateNewShows(show: Show): Boolean {
+    val lastShowDate = show.date
     val today: LocalDate =  Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
     val daysRemaining = lastShowDate.minus(today).days
     return daysRemaining <= 0

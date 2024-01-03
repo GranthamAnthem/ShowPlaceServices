@@ -22,8 +22,7 @@ fun Route.webScrapeRoutes(dao: DAOFacade) {
                     if (dao.getAllVenues().isEmpty()) {
                         dao.addAllVenues(getVenuesFromWeb())
                     }
-                    val shows = dao.getAllShows()
-                    if (shows.isEmpty() || shouldUpdateNewShows(shows)) {
+                    if (dao.getAllShows().isEmpty()) {
                         dao.addAllShows(getShowsFromWeb())
                     }
                 } catch (ex: Exception) {
@@ -34,10 +33,17 @@ fun Route.webScrapeRoutes(dao: DAOFacade) {
         get("update") {
             launch {
                 try {
-                    call.respondText("Adding new shows...")
-                    val shows = dao.getAllShows()
-                    if (shows.isEmpty() || shouldUpdateNewShows(shows)) {
-                        dao.addAllShows(getShowsFromWeb())
+                    val show = dao.getLatestShow()
+                    show?.let {
+                        if (shouldUpdateNewShows(it)) {
+                            call.respondText("Adding new shows...")
+                            val showsFromWeb = getShowsFromWeb()
+                            dao.addAllShows(showsFromWeb)
+                        } else {
+                            call.respondText("No new shows to add")
+                        }
+                    } ?: run {
+                        call.respondText("No new shows to add")
                     }
                 } catch (ex: Exception) {
                     call.respondText("Error populating database")

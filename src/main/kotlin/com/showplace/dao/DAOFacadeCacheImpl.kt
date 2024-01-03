@@ -50,11 +50,14 @@ class DAOFacadeCacheImpl(
 
     override suspend fun getAllShows(): List<Show> {
         var shows = delegate.getAllShows()
-        if (shows.isEmpty() || shouldUpdateNewShows(shows)) {
+        if (shouldUpdateNewShows(shows.last())) {
             addAllShows(getShowsFromWeb())
             shows = delegate.getAllShows()
         }
         return shows
+    }
+    override suspend fun getLatestShow(): Show? {
+        return delegate.getLatestShow()
     }
 
     override suspend fun getAllShowsFromToday(page: Long): List<Show> {

@@ -295,6 +295,31 @@ class DAOFacadeImpl : DAOFacade {
         }
     }
 
+    override suspend fun getLatestShow(): Show? {
+        return dbQuery {
+            val show = ShowTable
+                .join(VenueTable, JoinType.INNER, ShowTable.venue, VenueTable.id)
+                .selectAll()
+                .orderBy(ShowTable.id, SortOrder.DESC)
+                .limit(1)
+                .map(::resultRowToShow)
+                .singleOrNull()
+
+            if (show != null) {
+                // get the bands for the show
+                val bands = ShowBandTable
+                    .join(BandTable, JoinType.INNER, ShowBandTable.band, BandTable.id)
+                    .select { ShowBandTable.show eq show.id }
+                    .map(::resultRowToBand)
+                // add the bands to the show
+                val show = show.copy(lineup = bands)
+                show
+            } else {
+                null
+            }
+        }
+    }
+
     override suspend fun deleteShowById(id: Int): Boolean {
         return dbQuery {
             ShowBandTable.deleteWhere { ShowBandTable.show eq id } > 0
