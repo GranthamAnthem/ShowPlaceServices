@@ -30,7 +30,7 @@ fun Route.webScrapeRoutes(dao: DAOFacade) {
                 }
             }
         }
-        get("update") {
+        get("/update") {
             launch {
                 try {
                     val show = dao.getLatestShow()
